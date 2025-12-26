@@ -7,6 +7,8 @@ import { QuickRhyme } from './components/QuickRhyme';
 import { TTSRapper } from './components/TTSRapper';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { AppMode } from './types';
+import { Button } from './components/ui/button';
+import { Mic, Feather } from 'lucide-react';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<AppMode>(AppMode.LIVE_CYPHER);
@@ -20,28 +22,30 @@ const App: React.FC = () => {
         {/* Navigation Sidebar (Mobile Sticky Bottom / Desktop Left) */}
         <div className="lg:col-span-3 space-y-4">
           <div className="sticky top-24 space-y-2">
-            <button 
+            <Button
               onClick={() => setActiveTab(AppMode.LIVE_CYPHER)}
-              className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all ${
-                activeTab === AppMode.LIVE_CYPHER 
-                ? 'bg-purple-600 text-white shadow-lg shadow-purple-900/40' 
-                : 'bg-zinc-900/50 text-zinc-400 hover:bg-zinc-800'
+              variant={activeTab === AppMode.LIVE_CYPHER ? 'default' : 'outline'}
+              className={`w-full justify-start gap-4 h-14 text-base ${
+                activeTab === AppMode.LIVE_CYPHER
+                ? 'bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-900/40' 
+                : 'bg-zinc-900/50 text-zinc-400 hover:bg-zinc-800 border-zinc-700'
               }`}
             >
-              <i className="fas fa-microphone-alt"></i>
+              <Mic className="h-5 w-5" />
               <span className="font-bold">LIVE CYPHER</span>
-            </button>
-            <button 
+            </Button>
+            <Button
               onClick={() => setActiveTab(AppMode.LYRIC_STUDIO)}
-              className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl transition-all ${
-                activeTab === AppMode.LYRIC_STUDIO 
-                ? 'bg-purple-600 text-white shadow-lg shadow-purple-900/40' 
-                : 'bg-zinc-900/50 text-zinc-400 hover:bg-zinc-800'
+              variant={activeTab === AppMode.LYRIC_STUDIO ? 'default' : 'outline'}
+              className={`w-full justify-start gap-4 h-14 text-base ${
+                activeTab === AppMode.LYRIC_STUDIO
+                ? 'bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-900/40' 
+                : 'bg-zinc-900/50 text-zinc-400 hover:bg-zinc-800 border-zinc-700'
               }`}
             >
-              <i className="fas fa-feather-alt"></i>
+              <Feather className="h-5 w-5" />
               <span className="font-bold">LYRIC STUDIO</span>
-            </button>
+            </Button>
             
             <div className="pt-8 space-y-4">
               <QuickRhyme />
@@ -67,20 +71,24 @@ const App: React.FC = () => {
 
       {/* Footer Mobile Nav Placeholder */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-black/80 backdrop-blur-lg border-t border-white/10 flex justify-around">
-        <button 
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={() => setActiveTab(AppMode.LIVE_CYPHER)}
-          className={`p-3 rounded-full ${activeTab === AppMode.LIVE_CYPHER ? 'text-purple-400' : 'text-zinc-500'}`}
+          className={`h-12 w-12 rounded-full ${activeTab === AppMode.LIVE_CYPHER ? 'text-purple-400' : 'text-zinc-500'}`}
         >
-          <i className="fas fa-microphone-alt text-2xl"></i>
-        </button>
-        <button 
+          <Mic className="h-6 w-6" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={() => setActiveTab(AppMode.LYRIC_STUDIO)}
-          className={`p-3 rounded-full ${activeTab === AppMode.LYRIC_STUDIO ? 'text-purple-400' : 'text-zinc-500'}`}
+          className={`h-12 w-12 rounded-full ${activeTab === AppMode.LYRIC_STUDIO ? 'text-purple-400' : 'text-zinc-500'}`}
         >
-          <i className="fas fa-feather-alt text-2xl"></i>
-        </button>
+          <Feather className="h-6 w-6" />
+        </Button>
       </div>
-      </div>
+    </div>
     </ErrorBoundary>
   );
 };

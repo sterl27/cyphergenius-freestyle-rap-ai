@@ -2,6 +2,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { GoogleGenAI, Modality, LiveServerMessage } from '@google/genai';
 import { decode, decodeAudioData, createBlob } from '../utils/audio';
+import { Button } from './ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Mic, MicOff, Radio, Loader2 } from 'lucide-react';
+import { Button } from './ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Mic, MicOff, Radio, Loader2 } from 'lucide-react';
 
 // Type for the Live Session
 type LiveSession = {
@@ -138,7 +144,7 @@ export const LiveRapSession: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center space-y-8 p-8 bg-zinc-900/50 rounded-3xl border border-white/10 h-full">
+    <Card className="flex flex-col items-center justify-center space-y-8 p-8 bg-zinc-900/50 border-white/10 h-full">
       <div className="relative">
         <div className={`w-48 h-48 rounded-full flex items-center justify-center border-4 transition-all duration-500 ${
           status === 'listening' ? 'border-green-500 glow-pulse' : 
@@ -146,12 +152,18 @@ export const LiveRapSession: React.FC = () => {
           status === 'connecting' ? 'border-yellow-500 animate-spin-slow' : 'border-zinc-700'
         }`}>
           <div className={`w-36 h-36 rounded-full flex items-center justify-center bg-zinc-800 ${isActive ? 'scale-110' : 'scale-100'} transition-transform`}>
-            <i className={`fas ${isActive ? 'fa-microphone' : 'fa-microphone-slash'} text-5xl ${isActive ? 'text-purple-400' : 'text-zinc-600'}`}></i>
+            {isActive ? (
+              <Mic className={`h-16 w-16 ${isActive ? 'text-purple-400' : 'text-zinc-600'}`} />
+            ) : (
+              <MicOff className="h-16 w-16 text-zinc-600" />
+            )}
           </div>
         </div>
         
         {isActive && (
-          <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-black px-4 py-1 rounded-full border border-white/20 text-xs font-bold uppercase tracking-widest text-purple-400">
+          <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-black px-4 py-1 rounded-full border border-white/20 text-xs font-bold uppercase tracking-widest text-purple-400 flex items-center gap-2">
+            {status === 'connecting' && <Loader2 className="h-3 w-3 animate-spin" />}
+            {status === 'rapping' && <Radio className="h-3 w-3" />}
             {status}
           </div>
         )}
@@ -173,21 +185,22 @@ export const LiveRapSession: React.FC = () => {
         </div>
       </div>
 
-      <button
+      <Button
         onClick={isActive ? stopSession : startSession}
-        className={`w-full max-w-xs py-4 rounded-2xl font-bungee text-xl transition-all ${
+        size="lg"
+        className={`w-full max-w-xs font-bungee text-xl transition-all ${
           isActive 
             ? 'bg-red-600/20 border border-red-500 text-red-500 hover:bg-red-600/30' 
             : 'bg-purple-600 text-white hover:bg-purple-500 shadow-lg shadow-purple-900/40'
         }`}
       >
         {isActive ? 'STOP SESSION' : 'ENTER THE CYPHER'}
-      </button>
+      </Button>
 
       <div className="text-zinc-500 text-xs text-center flex items-center gap-2">
-        <i className="fas fa-info-circle"></i>
+        <Radio className="h-3 w-3" />
         Requires microphone access for real-time interaction
       </div>
-    </div>
+    </Card>
   );
 };

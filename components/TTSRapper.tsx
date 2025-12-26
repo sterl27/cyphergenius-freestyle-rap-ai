@@ -2,6 +2,10 @@
 import React, { useState, useRef } from 'react';
 import { generateRapTTS } from '../services/geminiService';
 import { decode, decodeAudioData } from '../utils/audio';
+import { Button } from './ui/button';
+import { Textarea } from './ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from './ui/card';
+import { Music, Play, Loader2, AlertCircle } from 'lucide-react';
 
 export const TTSRapper: React.FC = () => {
   const [text, setText] = useState('');
@@ -43,35 +47,42 @@ export const TTSRapper: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-purple-900/10 rounded-3xl border border-purple-500/20 space-y-4">
-      <div className="flex items-center gap-3">
-        <i className="fas fa-music text-purple-400"></i>
-        <h3 className="font-bungee text-xl text-white">Rap Playback</h3>
-      </div>
-      <textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Paste your lyrics here to hear the AI rap them back..."
-        className="w-full h-24 bg-black/40 border border-white/10 rounded-xl p-4 focus:outline-none focus:ring-1 focus:ring-purple-500 text-white text-sm"
-      />
-      <button
-        onClick={handleRap}
-        disabled={isGenerating}
-        className="w-full bg-white text-black font-bold py-3 rounded-xl hover:bg-gray-200 transition-all flex items-center justify-center gap-2"
-      >
-        {isGenerating ? (
-          <><i className="fas fa-spinner animate-spin"></i> GENERATING...</>
-        ) : (
-          <><i className="fas fa-play"></i> RAP IT BACK</>
-        )}
-      </button>
-      {error && (
-        <div className="bg-red-900/20 border border-red-500/30 rounded-xl p-3 text-red-400 text-sm flex items-center gap-2">
-          <i className="fas fa-exclamation-circle"></i>
+    <Card className="bg-purple-900/10 border-purple-500/20">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-3">
+          <Music className="text-purple-400" />
+          <span className="font-bungee text-xl text-white">Rap Playback</span>
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <Textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Paste your lyrics here to hear the AI rap them back..."
+          className="min-h-24 bg-black/40 border-white/10 text-white placeholder:text-zinc-500 resize-none"
+        />
+        <Button
+          onClick={handleRap}
+          disabled={isGenerating}
+          className="w-full bg-white text-black font-bold hover:bg-gray-200"
+          size="lg"
+        >
+          {isGenerating ? (
+            <><Loader2 className="animate-spin" /> GENERATING...</>
+          ) : (
+            <><Play className="h-4 w-4" /> RAP IT BACK</>
+          )}
+        </Button>
+        {error && (
+          <div className="bg-red-900/20 border border-red-500/30 rounded-xl p-3 text-red-400 text-sm flex items-center gap-2">
+            <AlertCircle className="h-4 w-4" />
           {error}
         </div>
       )}
-      <p className="text-[10px] text-zinc-500 text-center uppercase tracking-widest">Powered by Gemini 2.5 TTS</p>
-    </div>
+      </CardContent>
+      <CardFooter className="justify-center">
+        <p className="text-[10px] text-zinc-500 text-center uppercase tracking-widest">Powered by Gemini 2.5 TTS</p>
+      </CardFooter>
+    </Card>
   );
 };

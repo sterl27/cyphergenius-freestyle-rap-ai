@@ -3,6 +3,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getGeminiChat } from '../services/geminiService';
 import { saveLyricSession, isSupabaseConfigured } from '../services/supabaseClient';
 import { Message } from '../types';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Download, Trash2, Send, Loader2 } from 'lucide-react';
 
 const STORAGE_KEY = 'cyphergenius_lyric_history';
 
@@ -139,22 +142,26 @@ export const LyricStudio: React.FC = () => {
           )}
         </div>
         <div className="flex items-center gap-3">
-          <button 
+          <Button 
             onClick={downloadLyrics}
-            className="text-zinc-400 hover:text-white transition-colors text-xs flex items-center gap-1.5 uppercase font-bold bg-zinc-800/50 px-3 py-1.5 rounded-lg border border-white/5"
+            variant="outline"
+            size="sm"
+            className="text-zinc-400 hover:text-white bg-zinc-800/50 border-white/5"
             title="Download lyrics as text file"
           >
-            <i className="fas fa-download"></i>
+            <Download className="h-4 w-4" />
             <span className="hidden sm:inline">Export</span>
-          </button>
-          <button 
+          </Button>
+          <Button 
             onClick={clearHistory}
-            className="text-zinc-500 hover:text-red-400 transition-colors text-xs flex items-center gap-1.5 uppercase font-bold bg-zinc-800/50 px-3 py-1.5 rounded-lg border border-white/5"
+            variant="outline"
+            size="sm"
+            className="text-zinc-500 hover:text-red-400 bg-zinc-800/50 border-white/5"
             title="Clear all lyrics"
           >
-            <i className="fas fa-trash-alt"></i>
+            <Trash2 className="h-4 w-4" />
             <span className="hidden sm:inline">Clear</span>
-          </button>
+          </Button>
         </div>
       </div>
       
@@ -183,20 +190,21 @@ export const LyricStudio: React.FC = () => {
       </div>
 
       <div className="p-4 bg-black/40 border-t border-white/10 flex gap-2">
-        <input
+        <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+          onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleSend()}
           placeholder="Enter lyrics or ask for tips..."
-          className="flex-1 bg-zinc-800 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white transition-all"
+          className="flex-1 bg-zinc-800 border-white/10 text-white placeholder:text-zinc-500"
         />
-        <button 
+        <Button 
           onClick={handleSend}
           disabled={isLoading}
-          className="bg-purple-600 hover:bg-purple-500 disabled:opacity-50 disabled:cursor-not-allowed p-3 rounded-xl w-12 flex items-center justify-center transition-all active:scale-95"
+          size="icon"
+          className="bg-purple-600 hover:bg-purple-500"
         >
-          <i className={`fas ${isLoading ? 'fa-spinner animate-spin' : 'fa-paper-plane'}`}></i>
-        </button>
+          {isLoading ? <Loader2 className="animate-spin" /> : <Send className="h-4 w-4" />}
+        </Button>
       </div>
     </div>
   );
