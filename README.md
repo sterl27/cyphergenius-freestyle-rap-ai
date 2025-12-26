@@ -10,8 +10,9 @@
 [![Gemini AI](https://img.shields.io/badge/Gemini-2.5-purple.svg)](https://ai.google.dev/)
 [![Vite](https://img.shields.io/badge/Vite-6.2-646cff.svg)](https://vitejs.dev/)
 [![Supabase](https://img.shields.io/badge/Supabase-Database-green.svg)](https://supabase.com/)
+[![Deployed](https://img.shields.io/badge/Deployed-Vercel-black.svg)](https://cyphergenius-freestyle-rap-ai.vercel.app)
 
-[View in AI Studio](https://ai.studio/apps/drive/1OgeV2NVc24GJNyWiy5HB7nj6s8-aYQD0)
+**[🚀 Live Demo](https://cyphergenius-freestyle-rap-ai.vercel.app)** | **[📦 GitHub](https://github.com/sterl27/cyphergenius-freestyle-rap-ai)** | [View in AI Studio](https://ai.studio/apps/drive/1OgeV2NVc24GJNyWiy5HB7nj6s8-aYQD0)
 
 </div>
 
@@ -20,6 +21,14 @@
 ## 📖 About
 
 CypherGenius is an interactive web application that brings AI-powered freestyle rap capabilities to your browser. Built with React, TypeScript, and Google's Gemini AI, it offers multiple modes for rappers and lyricists to practice, create, and improve their craft.
+
+**🎉 Latest Updates (Dec 2025):**
+- ✅ Production deployment on Vercel
+- ✅ Full Supabase cloud sync integration
+- ✅ Error boundary for graceful failure handling
+- ✅ Memory leak fixes for audio contexts
+- ✅ User-friendly error messages
+- ✅ Auto-save to cloud with debouncing
 
 ## ✨ Features
 
@@ -76,7 +85,8 @@ cyphergenius_-freestyle-rap-ai/
 │   ├── LiveRapSession.tsx      # Real-time audio cypher mode
 │   ├── LyricStudio.tsx         # Chat-based lyric writing
 │   ├── QuickRhyme.tsx          # Instant rhyme finder
-│   └── TTSRapper.tsx           # Text-to-speech rap playback
+│   ├── TTSRapper.tsx           # Text-to-speech rap playback
+│   └── ErrorBoundary.tsx       # Error handling component
 ├── services/
 │   ├── geminiService.ts        # Gemini AI API integration
 │   └── supabaseClient.ts       # Supabase database client
@@ -151,6 +161,33 @@ npm run build
 npm run preview
 ```
 
+## 🚀 Deploy to Vercel
+
+The app is optimized for Vercel deployment:
+
+1. **Push to GitHub:**
+   ```bash
+   git add .
+   git commit -m "Your message"
+   git push
+   ```
+
+2. **Deploy with Vercel CLI:**
+   ```bash
+   vercel link
+   vercel env add VITE_GEMINI_API_KEY production
+   vercel env add VITE_SUPABASE_URL production  # Optional
+   vercel env add VITE_SUPABASE_ANON_KEY production  # Optional
+   vercel --prod
+   ```
+
+3. **Or deploy via Vercel Dashboard:**
+   - Import GitHub repository
+   - Add environment variables
+   - Deploy
+
+**Live Demo:** https://cyphergenius-freestyle-rap-ai.vercel.app
+
 ## ☁️ Optional: Supabase Cloud Sync
 
 Enable cloud storage for your sessions:
@@ -197,11 +234,13 @@ Enable cloud storage for your sessions:
 
 ## ⚠️ Known Issues & Limitations
 
-- **API Key Security:** Currently client-side only. Consider backend proxy for production.
+- **API Key Security:** API keys are embedded in client bundle. For production use, implement backend proxy.
 - **Browser Compatibility:** Live Cypher requires modern browsers with Web Audio API support
 - **Microphone Access:** Must grant permissions for real-time features
 - **ScriptProcessorNode:** Uses deprecated API (migration to AudioWorklet planned)
 - **Rate Limits:** Subject to Gemini API quotas and limits
+
+**Production Security Note:** The current implementation is suitable for development and personal use. For production with public access, implement a serverless backend (Cloudflare Workers, Vercel Edge Functions) to proxy API requests and keep keys secure.
 
 ## 🔧 Troubleshooting
 
@@ -242,15 +281,19 @@ This project is part of Google AI Studio. Check the original project for license
 
 ## 🔗 Links
 
+**Project:**
+- [🚀 Live Demo](https://cyphergenius-freestyle-rap-ai.vercel.app)
+- [📦 GitHub Repository](https://github.com/sterl27/cyphergenius-freestyle-rap-ai)
+- [📄 Technical Paper](TECHNICAL_PAPER.md)
+- [🗄️ Supabase Setup Guide](SUPABASE_SETUP.md)
+- [View in AI Studio](https://ai.studio/apps/drive/1OgeV2NVc24GJNyWiy5HB7nj6s8-aYQD0)
+
+**Documentation:**
 - [Google AI Studio](https://ai.studio/)
 - [Gemini API Documentation](https://ai.google.dev/docs)
-- [Supabase](https://supabase.com/)
 - [Supabase Documentation](https://supabase.com/docs)
-- [ElevenLabs](https://elevenlabs.io/)
 - [ElevenLabs API Documentation](https://elevenlabs.io/docs)
-- [View App in AI Studio](https://ai.studio/apps/drive/1OgeV2NVc24GJNyWiy5HB7nj6s8-aYQD0)
-- [Technical Paper](TECHNICAL_PAPER.md)
-- [Supabase Setup Guide](SUPABASE_SETUP.md)
+- [Vercel Documentation](https://vercel.com/docs)
 
 ## 🙏 Acknowledgments
 
