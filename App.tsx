@@ -80,6 +80,7 @@ const App: React.FC = () => {
           <i className="fas fa-feather-alt text-2xl"></i>
         </button>
       </div>
+      </div>
     </ErrorBoundary>
   );
 };
