@@ -5,13 +5,15 @@ import { LiveRapSession } from './components/LiveRapSession';
 import { LyricStudio } from './components/LyricStudio';
 import { QuickRhyme } from './components/QuickRhyme';
 import { TTSRapper } from './components/TTSRapper';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { AppMode } from './types';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<AppMode>(AppMode.LIVE_CYPHER);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <ErrorBoundary>
+      <div className="min-h-screen flex flex-col">
       <Header />
       
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -78,7 +80,7 @@ const App: React.FC = () => {
           <i className="fas fa-feather-alt text-2xl"></i>
         </button>
       </div>
-    </div>
+    </ErrorBoundary>
   );
 };
 

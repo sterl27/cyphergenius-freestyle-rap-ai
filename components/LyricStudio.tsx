@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { getGeminiChat } from '../services/geminiService';
+import { saveLyricSession, isSupabaseConfigured } from '../services/supabaseClient';
 import { Message } from '../types';
 
 const STORAGE_KEY = 'cyphergenius_lyric_history';
@@ -42,6 +43,27 @@ export const LyricStudio: React.FC = () => {
   // Save to localStorage whenever messages change
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+  }, [messages]);
+
+  // Auto-save to Supabase (debounced)
+  useEffect(() => {
+    if (messages.length <= 1) return; // Skip if only welcome message
+    
+    const saveToCloud = async () => {
+      if (isSupabaseConfigured()) {
+        try {
+          await saveLyricSession({
+            title: `Session ${new Date().toLocaleDateString()}`,
+            messages: messages,
+          });
+        } catch (err) {
+          console.error('Failed to save to cloud:', err);
+        }
+      }
+    };
+
+    const debounceTimer = setTimeout(saveToCloud, 3000); // Save after 3s of inactivity
+    return () => clearTimeout(debounceTimer);
   }, [messages]);
 
   // Auto-scroll to bottom

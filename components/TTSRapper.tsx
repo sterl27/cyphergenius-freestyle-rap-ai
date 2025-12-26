@@ -6,11 +6,20 @@ import { decode, decodeAudioData } from '../utils/audio';
 export const TTSRapper: React.FC = () => {
   const [text, setText] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
+
+  // Cleanup on component unmount
+  React.useEffect(() => {
+    return () => {
+      audioContextRef.current?.close();
+    };
+  }, []);
 
   const handleRap = async () => {
     if (!text.trim() || isGenerating) return;
     setIsGenerating(true);
+    setError(null);
     
     try {
       const base64 = await generateRapTTS(text);
@@ -27,6 +36,7 @@ export const TTSRapper: React.FC = () => {
       }
     } catch (err) {
       console.error(err);
+      setError('Failed to generate audio. Check your API key.');
     } finally {
       setIsGenerating(false);
     }
@@ -55,6 +65,12 @@ export const TTSRapper: React.FC = () => {
           <><i className="fas fa-play"></i> RAP IT BACK</>
         )}
       </button>
+      {error && (
+        <div className="bg-red-900/20 border border-red-500/30 rounded-xl p-3 text-red-400 text-sm flex items-center gap-2">
+          <i className="fas fa-exclamation-circle"></i>
+          {error}
+        </div>
+      )}
       <p className="text-[10px] text-zinc-500 text-center uppercase tracking-widest">Powered by Gemini 2.5 TTS</p>
     </div>
   );

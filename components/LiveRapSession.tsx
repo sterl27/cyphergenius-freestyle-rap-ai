@@ -34,10 +34,19 @@ export const LiveRapSession: React.FC = () => {
     setStatus('idle');
   }, []);
 
+  // Cleanup on component unmount
+  useEffect(() => {
+    return () => {
+      stopSession();
+      audioContextRef.current?.close();
+      outputAudioContextRef.current?.close();
+    };
+  }, [stopSession]);
+
   const startSession = async () => {
     setIsActive(true);
     setStatus('connecting');
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
     
     try {
       if (!audioContextRef.current) {

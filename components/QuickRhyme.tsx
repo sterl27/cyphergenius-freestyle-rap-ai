@@ -1,21 +1,39 @@
 
 import React, { useState } from 'react';
 import { generateQuickRhymes } from '../services/geminiService';
+import { saveRhymeQuery, isSupabaseConfigured } from '../services/supabaseClient';
 import { RhymeResponse } from '../types';
 
 export const QuickRhyme: React.FC = () => {
   const [word, setWord] = useState('');
   const [results, setResults] = useState<RhymeResponse | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleFind = async () => {
     if (!word.trim()) return;
     setLoading(true);
+    setError(null);
     try {
       const data = await generateQuickRhymes(word);
       setResults(data);
+      
+      // Save to Supabase if configured
+      if (isSupabaseConfigured()) {
+        try {
+          await saveRhymeQuery({
+            word: data.word,
+            rhymes: data.rhymes,
+            suggestions: data.suggestions,
+          });
+        } catch (err) {
+          console.error('Failed to save rhyme query to cloud:', err);
+        }
+      }
     } catch (err) {
       console.error(err);
+      setError('Failed to find rhymes. Check your API key.');
+      setResults(null);
     } finally {
       setLoading(false);
     }
@@ -43,6 +61,13 @@ export const QuickRhyme: React.FC = () => {
           {loading ? <i className="fas fa-spinner animate-spin"></i> : 'GET'}
         </button>
       </div>
+
+      {error && (
+        <div className="bg-red-900/20 border border-red-500/30 rounded-xl p-3 text-red-400 text-sm flex items-center gap-2">
+          <i className="fas fa-exclamation-circle"></i>
+          {error}
+        </div>
+      )}
 
       {results && (
         <div className="space-y-4 animate-fade-in">
