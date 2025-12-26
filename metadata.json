@@ -1,0 +1,7 @@
+{
+  "name": "CypherGenius: Freestyle Rap AI",
+  "description": "A high-energy conversational agent for freestyle rapping, battle training, and lyric generation using Gemini's latest audio and text models.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
